@@ -4,11 +4,14 @@
 # Step 3: put this script under {caffe_root}/examples/hed/
 # Step 4: run the following script:
 #       python batch_hed.py --images_dir=/data/to/path/photos/ --hed_mat_dir=/data/to/path/hed_mat_files/
-# The code sometimes crashes after computation is done. Error looks like "Check failed: ... driver shutting down". You can just kill the job.
-# For large images, it will produce gpu memory issue. Therefore, you better resize the images before running this script.
+# The code sometimes crashes after computation is done. Error looks like "Check failed: ... driver shutting down".
+# You can just kill the job.
+# For large images, it will produce gpu memory issue.
+# Therefore, you better resize the images before running this script.
 # Step 5: run the MATLAB post-processing script "PostprocessHED.m"
 
 
+import caffe
 import numpy as np
 from PIL import Image
 import os
@@ -18,14 +21,22 @@ import scipy.io as sio
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='batch proccesing: photos->edges')
-    parser.add_argument('--caffe_root', dest='caffe_root', help='caffe root', default='../../', type=str)
-    parser.add_argument('--caffemodel', dest='caffemodel', help='caffemodel', default='./hed_pretrained_bsds.caffemodel', type=str)
-    parser.add_argument('--prototxt', dest='prototxt', help='caffe prototxt file', default='./deploy.prototxt', type=str)
-    parser.add_argument('--images_dir', dest='images_dir', help='directory to store input photos', type=str)
-    parser.add_argument('--hed_mat_dir', dest='hed_mat_dir', help='directory to store output hed edges in mat file', type=str)
-    parser.add_argument('--border', dest='border', help='padding border', type=int, default=128)
-    parser.add_argument('--gpu_id', dest='gpu_id', help='gpu id', type=int, default=1)
+    parser = argparse.ArgumentParser(
+        description='batch proccesing: photos->edges')
+    parser.add_argument('--caffe_root', dest='caffe_root',
+                        help='caffe root', default='../../', type=str)
+    parser.add_argument('--caffemodel', dest='caffemodel', help='caffemodel',
+                        default='./hed_pretrained_bsds.caffemodel', type=str)
+    parser.add_argument('--prototxt', dest='prototxt',
+                        help='caffe prototxt file', default='./deploy.prototxt', type=str)
+    parser.add_argument('--images_dir', dest='images_dir',
+                        help='directory to store input photos', type=str)
+    parser.add_argument('--hed_mat_dir', dest='hed_mat_dir',
+                        help='directory to store output hed edges in mat file', type=str)
+    parser.add_argument('--border', dest='border',
+                        help='padding border', type=int, default=128)
+    parser.add_argument('--gpu_id', dest='gpu_id',
+                        help='gpu id', type=int, default=1)
     args = parser.parse_args()
     return args
 
@@ -34,9 +45,9 @@ args = parse_args()
 for arg in vars(args):
     print('[%s] =' % arg, getattr(args, arg))
 # Make sure that caffe is on the python path:
-caffe_root = args.caffe_root   # this file is expected to be in {caffe_root}/examples/hed/
+# this file is expected to be in {caffe_root}/examples/hed/
+caffe_root = args.caffe_root
 sys.path.insert(0, caffe_root + 'python')
-import caffe
 
 
 if not os.path.exists(args.hed_mat_dir):
@@ -78,4 +89,5 @@ for i in range(nImgs):
     fuse = fuse[border:-border, border:-border]
     # save hed file to the disk
     name, ext = os.path.splitext(imgList[i])
-    sio.savemat(os.path.join(args.hed_mat_dir, name + '.mat'), {'predict': fuse})
+    sio.savemat(os.path.join(args.hed_mat_dir,
+                             name + '.mat'), {'predict': fuse})

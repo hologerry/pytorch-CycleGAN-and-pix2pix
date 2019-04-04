@@ -8,7 +8,8 @@ import torchvision.transforms as transforms
 
 
 class ColorizationDataset(BaseDataset):
-    """This dataset class can load a set of natural images in RGB, and convert RGB format into (L, ab) pairs in Lab color space.
+    """This dataset class can load a set of natural images in RGB,
+       and convert RGB format into (L, ab) pairs in Lab color space.
 
     This dataset is required by pix2pix-based colorization model ('--model colorization')
     """
@@ -18,7 +19,8 @@ class ColorizationDataset(BaseDataset):
 
         Parameters:
             parser          -- original option parser
-            is_train (bool) -- whether training phase or test phase. You can use this flag to add training-specific or test-specific options.
+            is_train (bool) -- whether training phase or test phase.
+                            You can use this flag to add training-specific or test-specific options.
 
         Returns:
             the modified parser.
@@ -38,7 +40,8 @@ class ColorizationDataset(BaseDataset):
         BaseDataset.__init__(self, opt)
         self.dir = os.path.join(opt.dataroot)
         self.AB_paths = sorted(make_dataset(self.dir, opt.max_dataset_size))
-        assert(opt.input_nc == 1 and opt.output_nc == 2 and opt.direction == 'AtoB')
+        assert(opt.input_nc == 1 and opt.output_nc ==
+               2 and opt.direction == 'AtoB')
         self.transform = get_transform(self.opt, convert=False)
 
     def __getitem__(self, index):

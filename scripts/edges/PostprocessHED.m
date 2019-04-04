@@ -6,7 +6,7 @@
 %%% parameters
 % hed_mat_dir: the hed mat file directory (the output of 'batch_hed.py')
 % edge_dir: the output HED edges directory
-% image_width: resize the edge map to [image_width, image_width] 
+% image_width: resize the edge map to [image_width, image_width]
 % threshold: threshold for image binarization (default 25.0/255.0)
 % small_edge: remove small edges (default 5)
 
@@ -27,7 +27,7 @@ for n = 1 : nFiles
     filePath = fullfile(hed_mat_dir, fileName);
     jpgName = strrep(fileName, '.mat', '.jpg');
     edge_path = fullfile(edge_dir, jpgName);
-    
+
     if ~exist(edge_path, 'file')
         E = GetEdge(filePath);
         E = imresize(E,[image_width,image_width]);

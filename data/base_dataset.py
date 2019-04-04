@@ -1,6 +1,7 @@
 """This module implements an abstract base class (ABC) 'BaseDataset' for datasets.
 
-It also includes common transformation functions (e.g., get_transform, __scale_width), which can be later used in subclasses.
+It also includes common transformation functions (e.g., get_transform, __scale_width),
+which can be later used in subclasses.
 """
 import random
 import numpy as np
@@ -35,7 +36,8 @@ class BaseDataset(data.Dataset, ABC):
 
         Parameters:
             parser          -- original option parser
-            is_train (bool) -- whether training phase or test phase. You can use this flag to add training-specific or test-specific options.
+            is_train (bool) -- whether training phase or test phase.
+            You can use this flag to add training-specific or test-specific options.
 
         Returns:
             the modified parser.
@@ -86,22 +88,26 @@ def get_transform(opt, params=None, grayscale=False, method=Image.BICUBIC, conve
         osize = [opt.load_size, opt.load_size]
         transform_list.append(transforms.Resize(osize, method))
     elif 'scale_width' in opt.preprocess:
-        transform_list.append(transforms.Lambda(lambda img: __scale_width(img, opt.load_size, method)))
+        transform_list.append(transforms.Lambda(
+            lambda img: __scale_width(img, opt.load_size, method)))
 
     if 'crop' in opt.preprocess:
         if params is None:
             transform_list.append(transforms.RandomCrop(opt.crop_size))
         else:
-            transform_list.append(transforms.Lambda(lambda img: __crop(img, params['crop_pos'], opt.crop_size)))
+            transform_list.append(transforms.Lambda(
+                lambda img: __crop(img, params['crop_pos'], opt.crop_size)))
 
     if opt.preprocess == 'none':
-        transform_list.append(transforms.Lambda(lambda img: __make_power_2(img, base=4, method=method)))
+        transform_list.append(transforms.Lambda(
+            lambda img: __make_power_2(img, base=4, method=method)))
 
     if not opt.no_flip:
         if params is None:
             transform_list.append(transforms.RandomHorizontalFlip())
         elif params['flip']:
-            transform_list.append(transforms.Lambda(lambda img: __flip(img, params['flip'])))
+            transform_list.append(transforms.Lambda(
+                lambda img: __flip(img, params['flip'])))
 
     if convert:
         transform_list += [transforms.ToTensor(),

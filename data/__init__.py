@@ -1,6 +1,7 @@
 """This package includes all the modules related to data loading and preprocessing
 
- To add a custom dataset class called 'dummy', you need to add a file called 'dummy_dataset.py' and define a subclass 'DummyDataset' inherited from BaseDataset.
+ To add a custom dataset class called 'dummy', you need to add a file called 'dummy_dataset.py'
+ and define a subclass 'DummyDataset' inherited from BaseDataset.
  You need to implement four functions:
     -- <__init__>:                      initialize the class, first call BaseDataset.__init__(self, opt).
     -- <__len__>:                       return the size of dataset.
@@ -33,7 +34,9 @@ def find_dataset_using_name(dataset_name):
             dataset = cls
 
     if dataset is None:
-        raise NotImplementedError("In %s.py, there should be a subclass of BaseDataset with class name that matches %s in lowercase." % (dataset_filename, target_dataset_name))
+        raise NotImplementedError("In %s.py, there should be a subclass of BaseDataset "
+                                  "with class name that matches %s in lowercase."
+                                  % (dataset_filename, target_dataset_name))
 
     return dataset
 
